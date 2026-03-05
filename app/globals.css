@@ -1,26 +1,306 @@
 @import "tailwindcss";
 
+/* ============================================
+   CSS VARIABLES & ROOT STYLES
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core Color Variables */
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 0, 0, 0;
+  
+  /* Gcore Signature Accent Colors (RGB for opacity support) */
+  --accent-orange: 255, 69, 0;   /* #FF4500 */
+  --accent-red: 220, 38, 38;     /* #DC2626 */
+  
+  /* Glass Effect Variables - Deepened for the new template */
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-blur: 16px;
+  
+  /* Glow Effect Variables */
+  --glow-sm: 0 0 20px rgba(var(--accent-orange), 0.15);
+  --glow-md: 0 0 40px rgba(var(--accent-orange), 0.25);
+  --glow-lg: 0 0 60px rgba(var(--accent-red), 0.3);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ============================================
+   BASE STYLES
+   ============================================ */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: #1f2937; /* Tailwind gray-800 fallback */
+  }
+  
+  body {
+    @apply bg-black text-white antialiased;
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: var(--font-inter), sans-serif;
+  }
+  
+  ::selection {
+    background: rgba(var(--accent-orange), 0.3);
+    color: white;
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-white/30 ring-offset-2 ring-offset-black;
+  }
+  
+  button:focus-visible,
+  a:focus-visible {
+    @apply outline-none ring-2 ring-white/30;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================
+   GLASS MORPHISM & UTILITIES
+   ============================================ */
+
+@layer utilities {
+  
+  /* ================= TEMPLATE SPECIFIC ================= */
+  
+  /* The signature ambient orange/red glow from the video */
+  .glow-orange {
+    background: radial-gradient(
+      circle at center,
+      rgba(var(--accent-orange), 0.15) 0%,
+      rgba(var(--accent-red), 0.05) 40%,
+      transparent 70%
+    );
+  }
+
+  /* Massive CTA glow for the bottom of pages */
+  .glow-banner {
+    background: radial-gradient(
+      ellipse at bottom,
+      rgba(var(--accent-orange), 0.4) 0%,
+      rgba(var(--accent-red), 0.1) 40%,
+      transparent 80%
+    );
+  }
+
+  /* ================= GLASS STYLES ================= */
+  
+  /* Glass Effect - Default (Deep & Subtle) */
+  .glass-dark {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+  }
+  
+  /* Glass Effect - Stronger (For Hover States) */
+  .glass-darker {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  
+  /* Glass Effect - Lighter (For accents/badges) */
+  .glass-light {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  /* ================= PATTERNS ================= */
+  
+  /* Grid Pattern with Fade */
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px; /* Slightly larger grid for devtools feel */
+    mask-image: radial-gradient(
+      circle at center,
+      black 30%,
+      transparent 80%
+    );
+    -webkit-mask-image: radial-gradient(
+      circle at center,
+      black 30%,
+      transparent 80%
+    );
+  }
+  
+  /* Dot Pattern */
+  .dot-pattern {
+    background-image: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.08) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+  
+  /* ================= SPOTLIGHTS & SHADOWS ================= */
+  
+  .spotlight {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 60%
+    );
+  }
+  
+  .spotlight-top {
+    background: radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 50%
+    );
+  }
+  
+  .glow-sm { box-shadow: var(--glow-sm); }
+  .glow-md { box-shadow: var(--glow-md); }
+  .glow-lg { box-shadow: var(--glow-lg); }
+  
+  .text-glow { text-shadow: 0 0 30px rgba(var(--accent-orange), 0.5); }
+  .text-glow-sm { text-shadow: 0 0 15px rgba(var(--accent-orange), 0.3); }
+  
+  /* ================= ANIMATED CLASSES ================= */
+  
+  .text-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.6) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(90deg, 
+      rgba(var(--accent-orange), 0.2),
+      rgba(var(--accent-red), 0.5),
+      rgba(var(--accent-orange), 0.2)
+    );
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    background: rgb(var(--background-rgb));
+    border-radius: inherit;
+  }
+  
+  /* ================= UTILITY EFFECTS ================= */
+  
+  .noise-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .fade-edges {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+  }
+}
+
+/* ============================================
+   GLOBAL KEYFRAMES 
+   ============================================ */
+
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: var(--glow-sm); }
+  50% { opacity: 0.8; box-shadow: var(--glow-md); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #222222;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-orange), 0.5);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1a1310 #000000;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  body {
+    @apply bg-white text-black;
+  }
+  
+  .glass-dark,
+  .glass-darker,
+  .glass-light {
+    background: white !important;
+    border: 1px solid black !important;
+  }
 }
