@@ -1,88 +1,154 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 
-const links = [
+const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
   { href: "/features", label: "Features" },
   { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed w-full z-50 top-0 left-0 bg-black/60 backdrop-blur-xl"
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "glass-dark shadow-lg border-b border-white/5" : ""
+      }`}
     >
-      {/* Aesthetic Bottom Border Gradient */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-px bg-linear-to-rrom-transparent via-white/10 to-transparent" />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-3 group">
+            <motion.div 
+              className="relative w-12 h-12"
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Image
+                src="/logo.png"
+                alt="Hypenbloom Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </motion.div>
+            <span className="text-xl font-bold">
+              hypen<span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">bloom</span>
+            </span>
+          </Link>
 
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-10">
-        
-        {/* Logo */}
-        <Link href="/" className="text-xl font-bold tracking-tighter group flex items-center gap-2">
-          <span className="w-6 h-6 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-            <span className="w-2 h-2 bg-black rounded-full" />
-          </span>
-          <span className="bg-clip-text text-transparent bg-linear-to-r from-white to-gray-400 group-hover:to-white transition-colors duration-500">
-            HypenBloom.
-          </span>
-        </Link>
-
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-2 p-1 rounded-full bg-white/3er border-white/5">
-          {links.map((link) => {
-            const isActive = pathname === link.href;
-
-            return (
-              <Link
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link, index) => (
+              <motion.div
                 key={link.href}
-                href={link.href}
-                className="relative px-5 py-2 text-sm font-medium transition-colors"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 * index, duration: 0.4 }}
               >
-                {/* Active Link Sliding Pill Background */}
-                {isActive && (
-                  <motion.span
-                    layoutId="active-nav-pill"
-                    className="absolute inset-0 bg-white/10 rounded-full"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                
-                {/* Link Text */}
-                <span
-                  className={`relative z-10 transition-colors duration-300 ${
-                    isActive ? "text-white" : "text-gray-400 hover:text-gray-200"
-                  }`}
+                <Link
+                  href={link.href}
+                  className="text-gray-300 hover:text-orange-400 transition-colors duration-300 text-sm font-medium relative group"
                 >
                   {link.label}
-                </span>
-              </Link>
-            );
-          })}
-        </nav>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-400 to-red-600 group-hover:w-full transition-all duration-300" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
 
-        {/* CTA Button */}
-        <div className="flex items-center">
-          <Link 
-            href="/contact" 
-            className="group relative px-6 py-2.5 bg-white text-black rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.4 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="hidden md:block"
           >
-            <span className="relative z-10">Start Project</span>
-            {/* Subtle inner shadow/gradient for depth */}
-            <div className="absolute inset-0 rounded-full bg-linear-to-b from-white/0 to-black/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </Link>
-        </div>
+            <Link
+              href="/contact"
+              className="px-6 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-semibold text-sm hover:from-orange-600 hover:to-red-700 transition-all duration-300 shadow-[0_0_20px_rgba(255,69,0,0.3)] hover:shadow-[0_0_30px_rgba(255,69,0,0.5)]"
+            >
+              Get Started
+            </Link>
+          </motion.div>
 
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-white p-2 rounded-lg hover:bg-orange-500/10 transition-colors"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
-    </motion.header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden glass-dark border-t border-white/10"
+          >
+            <div className="px-6 py-4 space-y-2">
+              {navLinks.map((link, index) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 * index }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="block px-4 py-3 rounded-lg text-gray-300 hover:text-orange-400 hover:bg-orange-500/10 transition-all duration-300"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full px-6 py-3 rounded-full font-semibold text-white text-center bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 transition-all duration-300 mt-4 shadow-lg"
+                >
+                  Get Started
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }
