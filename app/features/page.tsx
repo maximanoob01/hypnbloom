@@ -394,7 +394,7 @@ export default function FeaturesPage() {
                           : product.name === "Rasoi360"
                             ? "/rasoi360"
                             : product.name === "PaperFlow.ai"
-                              ? "/paperflow"
+                              ? "/paperflow.ai"
                               : "/contact"
                       }
                       className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-semibold hover:from-orange-600 hover:to-red-700 transition-all duration-300 shadow-[0_0_30px_rgba(255,69,0,0.3)] group"

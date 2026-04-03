@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Shield, Clock, Users, BarChart, FileText, Bell, Lock,
   Database, ChevronRight, Check, Smartphone, Eye, TrendingUp,
@@ -273,6 +274,9 @@ export default function GateFlowPage() {
                 
                 {/* Dashboard Mockup Card */}
                 <div className="relative glass-dark rounded-3xl p-8 border border-blue-500/20 group-hover:border-blue-500/40 transition-all duration-300">
+                  <div className="mb-6 rounded-xl overflow-hidden border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.3)] relative group/img">
+                    <img src="/images/gateflow_dashboard.png" alt="GateFlow Dashboard" className="w-full h-auto object-cover group-hover/img:scale-105 transition-transform duration-700" />
+                  </div>
                   {/* Stats Grid */}
                   <div className="grid grid-cols-2 gap-6 mb-6">
                     {stats.map((stat, idx) => (
@@ -382,9 +386,17 @@ export default function GateFlowPage() {
                 />
                 
                 <div className="relative z-10 h-full flex flex-col justify-center items-center text-center">
-                  <Shield className="w-24 h-24 text-blue-400 mb-6" />
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }} 
+                    whileInView={{ y: 0, opacity: 1 }} 
+                    viewport={{ once: true }} 
+                    transition={{ duration: 0.8, delay: 0.2 }}
+                    className="relative w-48 h-80 mb-6 rounded-[2rem] overflow-hidden border-4 border-gray-900 shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+                  >
+                    <img src="/images/gateflow_student_id.png" alt="GateFlow Digital ID" className="w-full h-full object-cover" />
+                  </motion.div>
                   <h3 className="text-2xl font-bold mb-4">Secure. Smart. Simple.</h3>
-                  <p className="text-gray-400">
+                  <p className="text-gray-400 max-w-[250px]">
                     Built for the modern campus with enterprise-grade security
                   </p>
                 </div>
