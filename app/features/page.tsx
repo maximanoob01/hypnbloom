@@ -66,6 +66,32 @@ const products = [
       { label: "Average Sales Growth", value: "+45%" }
     ]
   },
+  {
+    name: "PaperFlow.ai",
+    tagline: "AI-Powered Exam Paper Generation",
+    description: "Revolutionary exam paper creation system powered by advanced AI. Upload your question bank and let our smart assistant generate perfectly formatted PDF examination papers in seconds.",
+    icon: Brain,
+    gradient: "from-purple-500/20 via-pink-500/20 to-orange-500/20",
+    features: [
+      "AI-assisted paper generation",
+      "Question bank management",
+      "Smart question selection",
+      "PDF export with formatting",
+      "Multiple paper patterns",
+      "Difficulty level balancing",
+    ],
+    tags: ["AI", "Education", "Automation", "PDF Generation"],
+    stats: {
+      papers: "10K+",
+      accuracy: "99.5%",
+      time_saved: "95%",
+    },
+    metrics: [
+      { label: "Papers Generated", value: "10K+" },
+      { label: "AI Accuracy", value: "99.5%" },
+      { label: "Time Saved", value: "95%" }
+    ]
+  },
 ];
 
 // ==========================================
@@ -136,7 +162,7 @@ const industries = [
     name: "Education",
     icon: "🎓",
     description: "Universities, colleges, and hostels",
-    products: ["GateFlow"]
+    products: ["GateFlow", "PaperFlow.ai"]
   },
   {
     name: "Hospitality",
@@ -170,15 +196,15 @@ export default function FeaturesPage() {
 
   return (
     <div ref={containerRef} className="relative w-full min-h-screen bg-black overflow-hidden">
-      
+
       {/* ================= ANIMATED BACKGROUND ================= */}
-      <motion.div 
+      <motion.div
         style={{ y: backgroundY }}
         className="fixed inset-0 -z-20"
       >
         <div className="absolute inset-0 grid-pattern opacity-20" />
         <div className="absolute inset-0 noise-texture opacity-30 mix-blend-overlay" />
-        
+
         {/* Gradient Orbs */}
         <motion.div
           animate={{
@@ -192,7 +218,7 @@ export default function FeaturesPage() {
           }}
           className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-orange-500/30 rounded-full blur-[120px]"
         />
-        
+
         <motion.div
           animate={{
             scale: [1, 1.3, 1],
@@ -209,7 +235,7 @@ export default function FeaturesPage() {
       </motion.div>
 
       {/* ================= HERO SECTION ================= */}
-      <motion.section 
+      <motion.section
         style={{ opacity: heroOpacity }}
         className="relative pt-32 pb-20 px-6"
       >
@@ -273,7 +299,7 @@ export default function FeaturesPage() {
               className="relative group"
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                
+
                 {/* Product Info */}
                 <motion.div
                   className={index % 2 === 1 ? "lg:order-2" : ""}
@@ -290,7 +316,7 @@ export default function FeaturesPage() {
                   >
                     <product.icon className="w-8 h-8 text-white" />
                   </motion.div>
-                  
+
                   <h2 className="text-5xl font-bold mb-3 tracking-tight">{product.name}</h2>
                   <p className="text-xl text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600 font-semibold mb-6">
                     {product.tagline}
@@ -363,11 +389,13 @@ export default function FeaturesPage() {
                   >
                     <Link
                       href={
-                        product.name === "GateFlow" 
-                          ? "/gateflow" 
+                        product.name === "GateFlow"
+                          ? "/gateflow"
                           : product.name === "Rasoi360"
-                          ? "/rasoi360"
-                          : "/contact"
+                            ? "/rasoi360"
+                            : product.name === "PaperFlow.ai"
+                              ? "/paperflow"
+                              : "/contact"
                       }
                       className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-semibold hover:from-orange-600 hover:to-red-700 transition-all duration-300 shadow-[0_0_30px_rgba(255,69,0,0.3)] group"
                     >
@@ -388,7 +416,7 @@ export default function FeaturesPage() {
                   <div className="relative group/card">
                     {/* Hover Glow Effect */}
                     <div className={`absolute -inset-1 bg-gradient-to-r ${product.gradient} rounded-3xl opacity-0 group-hover/card:opacity-100 blur-xl transition-opacity duration-500`} />
-                    
+
                     {/* Main Card */}
                     <div className="relative glass-dark rounded-3xl p-12 border border-white/10 group-hover/card:border-orange-500/30 transition-all duration-300">
                       {/* Stats Grid */}
@@ -429,7 +457,7 @@ export default function FeaturesPage() {
                           ease: "easeInOut",
                         }}
                       />
-                      
+
                       <motion.div
                         className="absolute bottom-8 left-8 w-16 h-16 rounded-full bg-red-500/10 blur-2xl"
                         animate={{
@@ -455,7 +483,7 @@ export default function FeaturesPage() {
       {/* ================= PLATFORM FEATURES ================= */}
       <section className="relative py-32 px-6">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent" />
-        
+
         <div className="relative max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -484,7 +512,7 @@ export default function FeaturesPage() {
                 className="relative group"
               >
                 <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-600/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
-                
+
                 <div className="relative glass-dark rounded-3xl p-8 border border-white/10 group-hover:border-orange-500/30 transition-all duration-300">
                   <motion.div
                     whileHover={{ rotate: 360 }}
@@ -546,7 +574,7 @@ export default function FeaturesPage() {
                 <div className={`glass-dark rounded-2xl p-8 border border-white/10 hover:border-orange-500/30 transition-all duration-300 h-full relative overflow-hidden`}>
                   {/* Gradient background on hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${capability.color} opacity-0 group-hover/cap:opacity-100 transition-opacity duration-500`} />
-                  
+
                   <div className="relative z-10">
                     <motion.div
                       whileHover={{ rotate: 360, scale: 1.1 }}
@@ -621,7 +649,7 @@ export default function FeaturesPage() {
           >
             {/* Glow Effect */}
             <div className="absolute -inset-4 bg-gradient-to-r from-orange-500/30 via-red-600/30 to-orange-500/30 rounded-3xl opacity-0 group-hover/cta:opacity-100 blur-2xl transition-opacity duration-500" />
-            
+
             {/* Card */}
             <div className="relative glass-dark rounded-3xl p-12 md:p-16 text-center border border-white/10 group-hover/cta:border-orange-500/30 transition-all duration-300">
               <motion.div
@@ -636,7 +664,7 @@ export default function FeaturesPage() {
                 <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
                   Ready to transform your operations? Get started with our intelligent products today.
                 </p>
-                
+
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Link
@@ -648,7 +676,7 @@ export default function FeaturesPage() {
                       <ChevronRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </motion.div>
-                  
+
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                     <Link
                       href="/services"
